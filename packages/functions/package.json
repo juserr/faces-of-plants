@@ -1,0 +1,15 @@
+{
+  "name": "@faces-of-plants/functions",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "sst bind vitest",
+    "typecheck": "tsc -noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.7",
+    "@types/aws-lambda": "^8.10.150",
+    "vitest": "^3.2.4",
+    "sst": "^3.17.8"
+  }
+}
