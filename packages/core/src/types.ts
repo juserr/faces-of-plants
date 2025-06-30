@@ -66,3 +66,44 @@ export interface LLMConfig {
   endpoint: string;
   model: string;
 }
+
+// Service integration types
+export interface ServiceCapability {
+  id: string;
+  name: string;
+  description: string;
+  inputSchema: object;
+  outputSchema: object;
+  version: string;
+}
+
+export interface ServiceProvider {
+  id: string;
+  name: string;
+  baseUrl?: string;
+  capabilities: ServiceCapability[];
+  authenticate?: () => Promise<void>;
+  discover?: () => Promise<ServiceCapability[]>;
+}
+
+export interface ServiceRequest {
+  serviceId: string;
+  capabilityId: string;
+  parameters: Record<string, any>;
+  metadata?: {
+    requestId: string;
+    userId?: string;
+    context?: Record<string, any>;
+  };
+}
+
+export interface ServiceResponse<T = any> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  metadata?: {
+    requestId: string;
+    executionTime: number;
+    serviceVersion: string;
+  };
+}

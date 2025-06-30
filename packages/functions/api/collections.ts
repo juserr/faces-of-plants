@@ -4,7 +4,14 @@ import { Resource } from "sst";
 
 const dynamodb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
-export const handler = async (event: any) => {
+interface LambdaEvent {
+  httpMethod?: string;
+  requestContext?: { http?: { method?: string } };
+  body?: string;
+  pathParameters?: { userId?: string };
+}
+
+export const handler = async (event: LambdaEvent) => {
   try {
     const method = event.httpMethod || event.requestContext?.http?.method;
     
@@ -52,7 +59,7 @@ export const handler = async (event: any) => {
     
     if (method === 'GET') {
       // Get collections for a user
-      const { userId } = event.pathParameters || {};
+      const userId = event.pathParameters?.userId;
       
       if (!userId) {
         return {
@@ -94,7 +101,7 @@ export const handler = async (event: any) => {
       },
       body: JSON.stringify({ error: 'Method not allowed' }),
     };
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Collections handler error:', error);
     return {
       statusCode: 500,

@@ -9,6 +9,33 @@ A modern, intelligent platform that bridges the gap between complex biodiversity
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue.svg)](https://typescriptlang.org)
 [![AWS](https://img.shields.io/badge/AWS-Serverless-orange.svg)](https://aws.amazon.com)
 
+---
+
+## ⚠️ Manual AWS Steps for Custom Domains
+
+- **CloudFront (Next.js site):**
+  - ACM certificate for your domain (e.g. `facesofplants.org`) **must be in us-east-1 (N. Virginia)**.
+  - Attach the certificate to your CloudFront distribution in the AWS Console.
+  - In Route53, create an **A record (Alias)** for your domain pointing to the CloudFront distribution.
+- **API Gateway:**
+  - ACM certificate must be in the same region as your API (eu-central-1/Frankfurt).
+  - Attach the certificate to your API Gateway custom domain.
+
+---
+
+## 🔑 Secret Management
+
+- **Never store secrets in `.env` for Lambda!** Use SST secrets:
+  - Set secrets for each stage:
+    ```sh
+    sst secret set LLM_API_KEY "your-api-key" --stage dev
+    sst secret set LLM_API_KEY "your-api-key" --stage production
+    ```
+  - Lambda functions will automatically receive secrets as environment variables.
+  - `.env.local` is only for local development.
+
+---
+
 ## 📋 Table of Contents
 
 - [🎯 Project Vision](#-project-vision)

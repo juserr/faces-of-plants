@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Search, Leaf, Users, Database, Globe, BookOpen, Zap } from 'lucide-react';
+import type { GBIFOccurrence } from "@faces-of-plants/core/src/types";
 
 interface SearchState {
   query: string;
@@ -15,34 +16,34 @@ const FacesOfPlantsLanding = () => {
     userType: 'citizen',
     isLoading: false
   });
+  const [results, setResults] = useState<GBIFOccurrence[]>([]);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchState.query.trim()) return;
 
     setSearchState(prev => ({ ...prev, isLoading: true }));
-    
-    // TODO: Replace with actual API call to backend
+    setResults([]);
     try {
-      const response = await fetch('/api/query', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          query: searchState.query,
+          question: searchState.query,
           userType: searchState.userType,
           filters: {}
         }),
       });
-      
       if (response.ok) {
-        const results = await response.json();
-        console.log('Search results:', results);
-        // TODO: Handle results display
-      }
-    } catch (error) {
-      console.error('Search error:', error);
+        const data = await response.json();
+        // Defensive: check for GBIF results
+        const gbifResults = data?.result?.data?.results || [];
+        setResults(gbifResults.slice(0, 5));
+      } 
+    } catch {
+      // Handle search error silently
     } finally {
       setSearchState(prev => ({ ...prev, isLoading: false }));
     }
@@ -193,6 +194,36 @@ const FacesOfPlantsLanding = () => {
               </div>
             </div>
           </form>
+
+          {/* Results Display */}
+          {results.length > 0 && (
+            <div className="mt-8">
+              <h4 className="text-lg font-semibold mb-2 text-gray-800">Top Results</h4>
+              <ul className="space-y-2">
+                {results.map((item, idx) => (
+                  <li key={item.key || idx} className="bg-white/70 rounded-lg p-4 border border-white/30 shadow-sm">
+                    <div className="font-medium text-green-700 text-base">{item.scientificName || 'Unknown species'}</div>
+                    <div className="text-sm text-gray-600 mb-1">
+                      <span>{item.country || 'Unknown country'}</span>
+                      {item.stateProvince ? `, ${item.stateProvince}` : ''}
+                      {item.locality ? `, ${item.locality}` : ''}
+                      {item.eventDate ? ` • ${item.eventDate}` : ''}
+                    </div>
+                    {(item.decimalLatitude && item.decimalLongitude) && (
+                      <a
+                        href={`https://www.google.com/maps?q=${item.decimalLatitude},${item.decimalLongitude}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline text-xs"
+                      >
+                        View on map
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Example Queries */}
           <div className="mt-6">

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faces of Plants - Visualization Design Framework</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid rgba(100, 116, 139, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: #10b981;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            color: #34d399;
+            margin: 2rem 0 1rem 0;
+        }
+
+        .section p {
+            line-height: 1.6;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+
+        .data-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .data-type {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .data-type h4 {
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .viz-demo {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+
+        .nav-flow {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-step {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+        }
+
+        .nav-arrow {
+            color: #34d399;
+            font-size: 1.5rem;
+        }
+
+        .correlation-matrix {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .correlation-cell {
+            aspect-ratio: 1;
+            border-radius: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        .user-personas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .persona {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 0.5rem;
+            padding: 2rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .persona h4 {
+            color: #10b981;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: "🌿";
+            position: absolute;
+            left: 0;
+        }
+
+        .timeline-viz {
+            width: 100%;
+            height: 200px;
+            margin: 1rem 0;
+        }
+
+        .map-viz {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #064e3b, #065f46);
+            border-radius: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .heatmap-cell {
+            width: 20px;
+            height: 20px;
+            margin: 1px;
+            display: inline-block;
+            border-radius: 2px;
+        }
+
+        .taxonomy-tree {
+            font-family: monospace;
+            line-height: 1.8;
+            color: #94a3b8;
+        }
+
+        .taxonomy-tree .kingdom { color: #ef4444; }
+        .taxonomy-tree .phylum { color: #f97316; }
+        .taxonomy-tree .class { color: #eab308; }
+        .taxonomy-tree .order { color: #22c55e; }
+        .taxonomy-tree .family { color: #06b6d4; }
+        .taxonomy-tree .genus { color: #8b5cf6; }
+        .taxonomy-tree .species { color: #ec4899; }
+
+        .chart-container {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .responsive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 1rem;
+            }
+            
+            .nav-flow {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌿 Faces of Plants - Visualization Design</h1>
+            <p>Comprehensive design framework for biodiversity data visualization, correlations, and user navigation patterns</p>
+        </div>
+
+        <div class="section">
+            <h2>🗺️ Interactive Geospatial Maps</h2>
+            
+            <h3>Data Types & Visualizations</h3>
+            <div class="data-types">
+                <div class="data-type">
+                    <h4>Occurrence Density</h4>
+                    <p>Heat maps showing species concentration across geographic regions with dynamic zoom levels</p>
+                </div>
+                <div class="data-type">
+                    <h4>Species Distribution</h4>
+                    <p>Choropleth maps with species richness, endemic species, and biodiversity hotspots</p>
+                </div>
+                <div class="data-type">
+                    <h4>Temporal Migration</h4>
+                    <p>Animated flow maps showing species movement patterns over time periods</p>
+                </div>
+                <div class="data-type">
+                    <h4>Collection Points</h4>
+                    <p>Clustered markers with specimen collection metadata and quality indicators</p>
+                </div>
+            </div>
+
+            <div class="viz-demo">
+                <h4>Interactive Map Demo Concept</h4>
+                <div class="map-viz">
+                    <div style="position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.7); padding: 10px; border-radius: 5px;">
+                        <div style="color: #10b981; font-weight: bold;">Quercus robur</div>
+                        <div style="font-size: 0.9em;">1,247 occurrences</div>
+                        <div style="font-size: 0.8em; color: #94a3b8;">Last updated: 2024</div>
+                    </div>
+                    <div style="position: absolute; bottom: 20px; right: 20px;">
+                        <button class="demo-button">Layer Controls</button>
+                        <button class="demo-button">Time Slider</button>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Navigation Flow</h3>
+            <div class="nav-flow">
+                <div class="nav-step">Map Overview</div>
+                <div class="nav-arrow">→</div>
+                <div class="nav-step">Region Zoom</div>
+                <div class="nav-arrow">→</div>
+                <div class="nav-step">Cluster Expand</div>
+                <div class="nav-arrow">→</div>
+                <div class="nav-step">Specimen Detail</div>
+                <div class="nav-arrow">→</div>
+                <div class="nav-step">Collection Save</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Data Visualization & Analytics</h2>
+
+            <h3>Chart Types & Correlations</h3>
+            <div class="responsive-grid">
+                <div class="chart-container">
+                    <h4 style="color: #10b981; margin-bottom: 1rem;">Species Abundance Timeline</h4>
+                    <div class="timeline-viz" id="timeline-chart"></div>
+                    <p style="font-size: 0.9em; color: #94a3b8;">Interactive time series with brushing and filtering capabilities</p>
+                </div>
+                
+                <div class="chart-container">
+                    <h4 style="color: #10b981; margin-bottom: 1rem;">Taxonomic Sunburst</h4>
+                    <div style="text-align: center; padding: 2rem;">
+                        <div style="width: 150px; height: 150px; border-radius: 50%; background: conic-gradient(#ef4444 0deg 60deg, #f97316 60deg 120deg, #eab308 120deg 180deg, #22c55e 180deg 240deg, #06b6d4 240deg 300deg, #8b5cf6 300deg 360deg); margin: 0 auto;"></div>
+                    </div>
+                    <p style="font-size: 0.9em; color: #94a3b8;">Hierarchical taxonomy with drill-down navigation</p>
+                </div>
+            </div>
+
+            <h3>Correlation Matrix</h3>
+            <p>Environmental factors vs. species occurrence patterns:</p>
+            <div class="correlation-matrix">
+                <div class="correlation-cell" style="background: #dc2626;">Temperature</div>
+                <div class="correlation-cell" style="background: #059669;">Rainfall</div>
+                <div class="correlation-cell" style="background: #d97706;">Elevation</div>
+                <div class="correlation-cell" style="background: #7c3aed;">Soil pH</div>
+                <div class="correlation-cell" style="background: #059669;">0.85</div>
+                <div class="correlation-cell" style="background: #dc2626;">-0.23</div>
+                <div class="correlation-cell" style="background: #7c3aed;">0.67</div>
+                <div class="correlation-cell" style="background: #d97706;">0.34</div>
+                <div class="correlation-cell" style="background: #7c3aed;">0.67</div>
+                <div class="correlation-cell" style="background: #dc2626;">-0.45</div>
+                <div class="correlation-cell" style="background: #059669;">0.78</div>
+                <div class="correlation-cell" style="background: #d97706;">0.12</div>
+                <div class="correlation-cell" style="background: #d97706;">0.34</div>
+                <div class="correlation-cell" style="background: #7c3aed;">0.56</div>
+                <div class="correlation-cell" style="background: #dc2626;">-0.21</div>
+                <div class="correlation-cell" style="background: #059669;">0.89</div>
+            </div>
+
+            <h3>Advanced Analytics Dashboard</h3>
+            <div class="responsive-grid">
+                <div class="data-type">
+                    <h4>Biodiversity Indices</h4>
+                    <p>Shannon-Weaver, Simpson's, and custom diversity metrics with comparative analysis</p>
+                </div>
+                <div class="data-type">
+                    <h4>Trend Analysis</h4>
+                    <p>Seasonal patterns, population trends, and statistical significance testing</p>
+                </div>
+                <div class="data-type">
+                    <h4>Predictive Models</h4>
+                    <p>Species distribution modeling and climate change impact projections</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔍 Advanced Multi-Database Search</h2>
+
+            <h3>Federated Search Architecture</h3>
+            <div class="data-types">
+                <div class="data-type">
+                    <h4>GBIF Integration</h4>
+                    <p>Primary occurrence and taxonomic data with 1.5B+ records</p>
+                </div>
+                <div class="data-type">
+                    <h4>iNaturalist</h4>
+                    <p>Citizen science observations with photo verification</p>
+                </div>
+                <div class="data-type">
+                    <h4>PlantNet</h4>
+                    <p>AI-powered plant identification and image recognition</p>
+                </div>
+                <div class="data-type">
+                    <h4>EOL (Encyclopedia of Life)</h4>
+                    <p>Comprehensive species information and media resources</p>
+                </div>
+                <div class="data-type">
+                    <h4>Regional Databases</h4>
+                    <p>Local herbarium collections and specialized regional datasets</p>
+                </div>
+                <div class="data-type">
+                    <h4>Environmental APIs</h4>
+                    <p>Climate data, soil information, and habitat characteristics</p>
+                </div>
+            </div>
+
+            <h3>Search Result Aggregation</h3>
+            <div class="viz-demo">
+                <h4>Unified Results Interface</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+                    <div style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 0.5rem; border-left: 4px solid #10b981;">
+                        <strong>GBIF Match</strong><br>
+                        Confidence: 98%<br>
+                        Records: 15,420
+                    </div>
+                    <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 0.5rem; border-left: 4px solid #3b82f6;">
+                        <strong>iNaturalist</strong><br>
+                        Confidence: 92%<br>
+                        Photos: 1,247
+                    </div>
+                    <div style="background: rgba(168, 85, 247, 0.1); padding: 1rem; border-radius: 0.5rem; border-left: 4px solid #a855f7;">
+                        <strong>Local Herbarium</strong><br>
+                        Confidence: 89%<br>
+                        Specimens: 45
+                    </div>
+                </div>
+            </div>
+
+            <h3>Search Navigation Pattern</h3>
+            <div class="nav-flow">
+                <div class="nav-step">Query Input</div>
+                <div class="nav-arrow">→</div>
+                <div class="nav-step">Source Selection</div>
+                <div class="nav-arrow">→</div>
+                <div class="nav-step">Parallel Search</div>
+                <div class="nav-arrow">→</div>
+                <div class="nav-step">Result Synthesis</div>
+                <div class="nav-arrow">→</div>
+                <div class="nav-step">Confidence Ranking</div>
+                <div class="nav-arrow">→</div>
+                <div class="nav-step">Export/Save</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>👥 User-Centric Design Patterns</h2>
+
+            <div class="user-personas">
+                <div class="persona">
+                    <h4>🌱 Citizen Scientist Interface</h4>
+                    <ul class="feature-list">
+                        <li>Simple, visual search results with photos</li>
+                        <li>Guided identification workflows</li>
+                        <li>Gamified discovery elements</li>
+                        <li>Social sharing and community features</li>
+                        <li>Mobile-first responsive design</li>
+                        <li>Educational content integration</li>
+                    </ul>
+                </div>
+
+                <div class="persona">
+                    <h4>🔬 Researcher Interface</h4>
+                    <ul class="feature-list">
+                        <li>Advanced filtering and query builders</li>
+                        <li>Bulk data export capabilities</li>
+                        <li>Statistical analysis tools</li>
+                        <li>Citation and reference management</li>
+                        <li>API access and documentation</li>
+                        <li>Collaborative workspace features</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Adaptive Interface Elements</h3>
+            <div class="responsive-grid">
+                <div class="data-type">
+                    <h4>Progressive Disclosure</h4>
+                    <p>Start simple, reveal complexity as needed. Context-aware feature exposure based on user behavior.</p>
+                </div>
+                <div class="data-type">
+                    <h4>Smart Defaults</h4>
+                    <p>AI-powered default settings based on user type, location, and search history.</p>
+                </div>
+                <div class="data-type">
+                    <h4>Cross-Platform Sync</h4>
+                    <p>Seamless experience across desktop, tablet, and mobile with cloud-synchronized collections.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔄 Data Flow & Navigation Architecture</h2>
+
+            <h3>Information Architecture</h3>
+            <div class="taxonomy-tree">
+                <div class="kingdom">🌍 Global View</div>
+                <div style="margin-left: 20px;">
+                    <div class="phylum">🗺️ Regional Maps</div>
+                    <div style="margin-left: 20px;">
+                        <div class="class">📍 Local Areas</div>
+                        <div style="margin-left: 20px;">
+                            <div class="order">🏞️ Habitats</div>
+                            <div style="margin-left: 20px;">
+                                <div class="family">🌿 Species Groups</div>
+                                <div style="margin-left: 20px;">
+                                    <div class="genus">🔍 Individual Species</div>
+                                    <div style="margin-left: 20px;">
+                                        <div class="species">📋 Specimen Records</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Cross-Feature Integration</h3>
+            <div class="viz-demo">
+                <h4>Unified Data Experience</h4>
+                <p style="margin-bottom: 1rem;">How features interconnect to create seamless user workflows:</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div style="text-align: center; padding: 1rem; background: rgba(16, 185, 129, 0.1); border-radius: 0.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔍</div>
+                        <strong>Search</strong><br>
+                        <small>Natural language query</small>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 0.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🗺️</div>
+                        <strong>Map</strong><br>
+                        <small>Geographic context</small>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: rgba(168, 85, 247, 0.1); border-radius: 0.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📊</div>
+                        <strong>Charts</strong><br>
+                        <small>Data analysis</small>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: rgba(34, 197, 94, 0.1); border-radius: 0.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">💾</div>
+                        <strong>Collections</strong><br>
+                        <small>Save & organize</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎨 Visual Design Principles</h2>
+
+            <h3>Color Psychology for Biodiversity</h3>
+            <div class="responsive-grid">
+                <div style="background: linear-gradient(135deg, #10b981, #34d399); padding: 1.5rem; border-radius: 0.5rem; color: white;">
+                    <h4>Primary Green Palette</h4>
+                    <p>Represents nature, growth, and life. Used for primary actions and positive data indicators.</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #3b82f6, #60a5fa); padding: 1.5rem; border-radius: 0.5rem; color: white;">
+                    <h4>Ocean Blue</h4>
+                    <p>For water-related data, marine species, and trust-building elements.</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #d97706, #f59e0b); padding: 1.5rem; border-radius: 0.5rem; color: white;">
+                    <h4>Earth Tones</h4>
+                    <p>For soil data, endangered species alerts, and terrestrial habitats.</p>
+                </div>
+                <div style="background: linear-gradient(135deg, #8b5cf6, #a78bfa); padding: 1.5rem; border-radius: 0.5rem; color: white;">
+                    <h4>Scientific Purple</h4>
+                    <p>For research tools, advanced features, and data quality indicators.</p>
+                </div>
+            </div>
+
+            <h3>Accessibility & Inclusion</h3>
+            <div class="data-types">
+                <div class="data-type">
+                    <h4>Color Blindness Support</h4>
+                    <p>Pattern-based differentiation alongside color coding, tested with deuteranopia/protanopia simulators</p>
+                </div>
+                <div class="data-type">
+                    <h4>Screen Reader Optimization</h4>
+                    <p>Semantic HTML, ARIA labels, and descriptive alt text for all visualizations</p>
+                </div>
+                <div class="data-type">
+                    <h4>Cognitive Load Reduction</h4>
+                    <p>Progressive disclosure, clear visual hierarchy, and consistent interaction patterns</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 3rem 0;">
+            <button class="demo-button" onclick="showDemo()">🌿 Interactive Demo</button>
+            <button class="demo-button" onclick="exportDesign()">📋 Export Design Specs</button>
+        </div>
+    </div>
+
+    <script>
+        // Create sample timeline chart
+        function createTimelineChart() {
+            const svg = d3.select("#timeline-chart")
+                .append("svg")
+                .attr("width", "100%")
+                .attr("height", "100%");
+
+            const data = [
+                {date: "2020", count: 1200},
+                {date: "2021", count: 1850},
+                {date: "2022", count: 2100},
+                {date: "2023", count: 1950},
+                {date: "2024", count: 2300}
+            ];
+
+            const width = 300;
+            const height = 150;
+            const margin = {top: 20, right: 30, bottom: 30, left: 40};
+
+            const x = d3.scaleBand()
+                .domain(data.map(d => d.date))
+                .range([margin.left, width - margin.right])
+                .padding(0.1);
+
+            const y = d3.scaleLinear()
+                .domain([0, d3.max(data, d => d.count)])
+                .nice()
+                .range([height - margin.bottom, margin.top]);
+
+            svg.selectAll("rect")
+                .data(data)
+                .join("rect")
+                .attr("x", d => x(d.date))
+                .attr("y", d => y(d.count))
+                .attr("width", x.bandwidth())
+                .attr("height", d => y(0) - y(d.count))
+                .attr("fill", "#10b981")
+                .attr("opacity", 0.8);
+
+            svg.append("g")
+                .attr("transform", `translate(0,${height - margin.bottom})`)
+                .call(d3.axisBottom(x))
+                .selectAll("text")
+                .style("fill", "#94a3b8");
+
+            svg.append("g")
+                .attr("transform", `translate(${margin.left},0)`)
+                .call(d3.axisLeft(y))
+                .selectAll("text")
+                .style("fill", "#94a3b8");
+        }
+
+        function showDemo() {
+            alert("🌿 This would launch an interactive prototype showcasing all visualization features!");
+        }
+
+        function exportDesign() {
+            const designSpecs = {
+                colorPalette: {
+                    primary: "#10b981",
+                    secondary: "#34d399", 
+                    accent: "#3b82f6",
+                    warning: "#f59e0b",
+                    error: "#ef4444"
+                },
+                typography: {
+                    primary: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif",
+                    monospace: "'SF Mono', 'Monaco', 'Inconsolata', monospace"
+                },
+                spacing: {
+                    unit: "0.25rem",
+                    small: "0.5rem",
+                    medium: "1rem", 
+                    large: "2rem",
+                    xlarge: "4rem"
+                },
+                breakpoints: {
+                    mobile: "768px",
+                    tablet: "1024px",
+                    desktop: "1280px"
+                }
+            };
+            
+            console.log("Design Specifications:", designSpecs);
+            alert("📋 Design specifications exported to console!");
+        }
+
+        // Initialize components
+        document.addEventListener('DOMContentLoaded', function() {
+            createTimelineChart();
+        });
+    </script>
+</body>
+</html>

@@ -9,7 +9,10 @@
     "deploy": "sst deploy",
     "remove": "sst remove",
     "console": "sst console",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "pnpm -C packages/web lint",
+    "format": "pnpm -C packages/web format",
+    "test:core": "jest packages/core/src/services/__tests__"
   },
   "devDependencies": {
     "@tsconfig/node18": "^18.2.4",

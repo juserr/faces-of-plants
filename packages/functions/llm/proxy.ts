@@ -3,11 +3,16 @@ interface LLMRequest {
   userType: 'citizen' | 'researcher';
 }
 
-export const handler = async (event: any) => {
+export const handler = async (event: any): Promise<any> => {
   try {
     const { query, userType }: LLMRequest = JSON.parse(event.body || '{}');
     
-    const config = {
+    const config: {
+      provider: string;
+      apiKey: string;
+      endpoint: string;
+      model: string;
+    } = {
       provider: process.env.LLM_PROVIDER as string,
       apiKey: process.env.LLM_API_KEY as string,
       endpoint: process.env.LLM_ENDPOINT as string,
@@ -33,6 +38,7 @@ export const handler = async (event: any) => {
         };
     }
   } catch (error) {
+    console.error('LLM Proxy error:', error);
     return {
       statusCode: 500,
       headers: {
@@ -44,7 +50,7 @@ export const handler = async (event: any) => {
   }
 };
 
-async function processWithOpenAI(query: string, userType: string, config: any) {
+async function processWithOpenAI(query: string, userType: string, config: { apiKey: string; endpoint: string; model: string }): Promise<any> {
   const response = await fetch(`${config.endpoint}/chat/completions`, {
     method: 'POST',
     headers: {
@@ -66,28 +72,43 @@ async function processWithOpenAI(query: string, userType: string, config: any) {
     }),
   });
 
-  const data = await response.json();
+  const data = (await response.json()) as {
+    choices?: { message?: { content?: string } }[];
+    usage?: any;
+  };
   return {
     statusCode: 200,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
     body: JSON.stringify({
-      response: data.choices[0].message.content,
+      response: data.choices?.[0]?.message?.content || '',
       usage: data.usage,
     }),
   };
 }
 
-async function processWithClaude(query: string, userType: string, config: any) {
+async function processWithClaude(query: string, userType: string, config: any): Promise<any> {
   // Implementation for Anthropic Claude
   return {
     statusCode: 501,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
     body: JSON.stringify({ error: 'Claude integration not implemented yet' }),
   };
 }
 
-async function processWithGroq(query: string, userType: string, config: any) {
+async function processWithGroq(query: string, userType: string, config: any): Promise<any> {
   // Implementation for Groq
   return {
     statusCode: 501,
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
     body: JSON.stringify({ error: 'Groq integration not implemented yet' }),
   };
 }
