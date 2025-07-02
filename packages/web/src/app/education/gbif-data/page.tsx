@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useMode, getBackgroundGradient, getTextColors } from '../../../context/ModeContext';
-import { Database, ArrowLeft, ArrowRight, BookOpen, Info, Target, CheckCircle, Globe, Users, Microscope } from 'lucide-react';
+import { Database, ArrowLeft, ArrowRight, BookOpen, Info, Target, CheckCircle, Globe, Users, Microscope } from '@phosphor-icons/react';
 import Link from 'next/link';
 
 export default function GBIFDataPage() {

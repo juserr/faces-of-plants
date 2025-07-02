@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.839.0",
+    "@phosphor-icons/react": "^2.1.10",
     "@radix-ui/react-select": "^2.2.5",
     "framer-motion": "^12.19.2",
     "lucide-react": "^0.525.0",

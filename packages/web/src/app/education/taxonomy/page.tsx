@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useMode, getBackgroundGradient, getTextColors } from '../../../context/ModeContext';
-import { TreePine, ArrowLeft, ArrowRight, BookOpen, Info, Target, CheckCircle } from 'lucide-react';
+import { Tree, ArrowLeft, ArrowRight, BookOpen, Info, Target, CheckCircle, Stack, Leaf, MagnifyingGlass } from '@phosphor-icons/react';
 import Link from 'next/link';
 
 export default function TaxonomyPage() {
@@ -145,7 +145,7 @@ export default function TaxonomyPage() {
             Back to Education Hub
           </Link>
           <div className="flex items-center justify-center mb-6">
-            <TreePine className={`w-12 h-12 ${accentColorClass} mr-4`} />
+            <Tree className={`w-12 h-12 ${accentColorClass} mr-4`} />
             <h1 className={`text-5xl font-bold ${textColors.primary}`}>
               Plant Taxonomy 101
             </h1>
@@ -209,7 +209,10 @@ export default function TaxonomyPage() {
           {currentSection === 0 && currentSectionData.content.keyPoints && (
             <div className="space-y-6">
               <div>
-                <h3 className={`text-xl font-semibold ${textColors.primary} mb-4`}>🎯 Key Points:</h3>
+                <h3 className={`text-xl font-semibold ${textColors.primary} mb-4 flex items-center`}>
+                  <Target className={`w-5 h-5 ${accentColorClass} mr-2`} />
+                  Key Points:
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {currentSectionData.content.keyPoints.map((point, index) => (
                     <div key={index} className={`${innerCardBg} rounded-lg p-4 border ${innerCardBorder}`}>
@@ -252,7 +255,10 @@ export default function TaxonomyPage() {
           {currentSection === 1 && currentSectionData.content.hierarchy && (
             <div className="space-y-6">
               <div>
-                <h3 className={`text-xl font-semibold ${textColors.primary} mb-4`}>🏗️ The Hierarchy:</h3>
+                <h3 className={`text-xl font-semibold ${textColors.primary} mb-4 flex items-center`}>
+                  <Stack className={`w-5 h-5 ${accentColorClass} mr-2`} />
+                  The Hierarchy:
+                </h3>
                 <div className="space-y-3">
                   {currentSectionData.content.hierarchy.map((level, index) => (
                     <div key={level.level} className={`${innerCardBg} rounded-lg p-4 border ${innerCardBorder} flex items-center`}>
@@ -301,7 +307,10 @@ export default function TaxonomyPage() {
               </div>
 
               <div>
-                <h3 className={`text-xl font-semibold ${textColors.primary} mb-4`}>🌱 Examples:</h3>
+                <h3 className={`text-xl font-semibold ${textColors.primary} mb-4 flex items-center`}>
+                  <Leaf className={`w-5 h-5 ${accentColorClass} mr-2`} />
+                  Examples:
+                </h3>
                 <div className="space-y-4">
                   {currentSectionData.content.examples.map((example, index) => (
                     <div key={index} className={`${innerCardBg} rounded-lg p-6 border ${innerCardBorder}`}>
@@ -343,7 +352,10 @@ export default function TaxonomyPage() {
               </div>
 
               <div>
-                <h3 className={`text-xl font-semibold ${textColors.primary} mb-4`}>🔍 Key Characteristics to Observe:</h3>
+                <h3 className={`text-xl font-semibold ${textColors.primary} mb-4 flex items-center`}>
+                  <MagnifyingGlass className={`w-5 h-5 ${accentColorClass} mr-2`} />
+                  Key Characteristics to Observe:
+                </h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {currentSectionData.content.characteristics.map((char, index) => (
                     <div key={index} className={`${innerCardBg} rounded-lg p-3 border ${innerCardBorder} text-center`}>

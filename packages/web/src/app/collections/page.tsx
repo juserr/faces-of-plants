@@ -1,6 +1,6 @@
 'use client';
 import { useMode, getBackgroundGradient, getTextColors } from '../../context/ModeContext';
-import { Users, LayoutDashboard } from 'lucide-react';
+import { Users, SquaresFour, Leaf, Microscope, Plant, ClipboardText, Globe, MapPin, MagnifyingGlass, ChartBar, FloppyDisk, Tree, Mountains } from '@phosphor-icons/react';
 
 export default function CollectionsPage() {
   const { mode, theme } = useMode();
@@ -47,7 +47,9 @@ export default function CollectionsPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-8">
             <div className={`${innerCardBg} rounded-lg p-6 border ${innerCardBorder}`}>
-              <h4 className={`${accentColorClass} mb-2`}>🌱 Citizen Scientist Interface</h4>
+              <h4 className={`${accentColorClass} mb-2 flex items-center`}>
+                <Leaf className="w-4 h-4 mr-2" /> Citizen Scientist Interface
+              </h4>
               <ul className={`list-none mt-4 space-y-2 ${listTextColor}`}>
                 <li>Simple, visual search results with photos</li>
                 <li>Guided identification workflows</li>
@@ -58,7 +60,9 @@ export default function CollectionsPage() {
               </ul>
             </div>
             <div className={`${innerCardBg} rounded-lg p-6 border ${innerCardBorder}`}>
-              <h4 className={`${accentColorClass} mb-2`}>🔬 Researcher Interface</h4>
+              <h4 className={`${accentColorClass} mb-2 flex items-center`}>
+                <Microscope className="w-4 h-4 mr-2" /> Researcher Interface
+              </h4>
               <ul className={`list-none mt-4 space-y-2 ${listTextColor}`}>
                 <li>Advanced filtering and query builders</li>
                 <li>Bulk data export capabilities</li>
@@ -74,25 +78,39 @@ export default function CollectionsPage() {
         {/* Data Flow & Navigation Architecture */}
         <div className={`section ${sectionBg} rounded-2xl p-8 border backdrop-blur-md mb-16`}>
           <h2 className={`text-2xl font-semibold ${accentColorClass} mb-6 flex items-center gap-2`}>
-            <LayoutDashboard size={24} /> Data Flow & Navigation Architecture
+            <SquaresFour size={24} /> Data Flow & Navigation Architecture
           </h2>
           <h3 className={`text-xl font-semibold ${theme === "light" ? (isCitizen ? "text-green-500" : "text-blue-500") : (isCitizen ? "text-green-400" : "text-blue-400")} mb-4`}>
             Information Architecture
           </h3>
           <div className={`font-mono ${listTextColor} leading-relaxed`}>
-            <div className="text-red-400">🌍 Global View</div>
+            <div className="text-red-400 flex items-center">
+              <Globe className="w-4 h-4 mr-1" /> Global View
+            </div>
             <div className="ml-4">
-              <div className="text-orange-400">🗺️ Regional Maps</div>
+              <div className="text-orange-400 flex items-center">
+                <MapPin className="w-4 h-4 mr-1" /> Regional Maps
+              </div>
               <div className="ml-4">
-                <div className="text-yellow-400">📍 Local Areas</div>
+                <div className="text-yellow-400 flex items-center">
+                  <MapPin className="w-3 h-3 mr-1" /> Local Areas
+                </div>
                 <div className="ml-4">
-                  <div className="text-green-400">🏞️ Habitats</div>
+                  <div className="text-green-400 flex items-center">
+                    <Mountains className="w-4 h-4 mr-1" /> Habitats
+                  </div>
                   <div className="ml-4">
-                    <div className="text-cyan-400">🌿 Species Groups</div>
+                    <div className="text-cyan-400 flex items-center">
+                      <Plant className="w-4 h-4 mr-1" /> Species Groups
+                    </div>
                     <div className="ml-4">
-                      <div className="text-purple-400">🔍 Individual Species</div>
+                      <div className="text-purple-400 flex items-center">
+                        <MagnifyingGlass className="w-4 h-4 mr-1" /> Individual Species
+                      </div>
                       <div className="ml-4">
-                        <div className="text-pink-400">📋 Specimen Records</div>
+                        <div className="text-pink-400 flex items-center">
+                          <ClipboardText className="w-4 h-4 mr-1" /> Specimen Records
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -109,22 +127,30 @@ export default function CollectionsPage() {
             <p className={`${listTextColor} mb-4`}>How features interconnect to create seamless user workflows:</p>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className={`text-center p-4 ${theme === "light" ? "bg-green-50/80 border border-green-200/50" : "bg-green-900/30 border border-green-700/30"} rounded-lg backdrop-blur-sm`}>
-                <div className="text-4xl mb-2">🔍</div>
+                <div className="flex justify-center mb-2">
+                  <MagnifyingGlass className="w-12 h-12 text-green-600" />
+                </div>
                 <strong className={textColors.primary}>Search</strong><br/>
                 <small className={textColors.secondary}>Natural language query</small>
               </div>
               <div className={`text-center p-4 ${theme === "light" ? "bg-blue-50/80 border border-blue-200/50" : "bg-blue-900/30 border border-blue-700/30"} rounded-lg backdrop-blur-sm`}>
-                <div className="text-4xl mb-2">🗺️</div>
+                <div className="flex justify-center mb-2">
+                  <MapPin className="w-12 h-12 text-blue-600" />
+                </div>
                 <strong className={textColors.primary}>Map</strong><br/>
                 <small className={textColors.secondary}>Geographic context</small>
               </div>
               <div className={`text-center p-4 ${theme === "light" ? "bg-purple-50/80 border border-purple-200/50" : "bg-purple-900/30 border border-purple-700/30"} rounded-lg backdrop-blur-sm`}>
-                <div className="text-4xl mb-2">📊</div>
+                <div className="flex justify-center mb-2">
+                  <ChartBar className="w-12 h-12 text-purple-600" />
+                </div>
                 <strong className={textColors.primary}>Charts</strong><br/>
                 <small className={textColors.secondary}>Data analysis</small>
               </div>
               <div className={`text-center p-4 ${theme === "light" ? "bg-green-50/80 border border-green-200/50" : "bg-green-900/30 border border-green-700/30"} rounded-lg backdrop-blur-sm`}>
-                <div className="text-4xl mb-2">💾</div>
+                <div className="flex justify-center mb-2">
+                  <FloppyDisk className="w-12 h-12 text-green-600" />
+                </div>
                 <strong className={textColors.primary}>Collections</strong><br/>
                 <small className={textColors.secondary}>Save & organize</small>
               </div>

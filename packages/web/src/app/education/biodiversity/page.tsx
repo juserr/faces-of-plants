@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useMode, getBackgroundGradient, getTextColors } from '../../../context/ModeContext';
-import { Globe, ArrowLeft, ArrowRight, BookOpen, Info, Target, CheckCircle, TreePine, Users, Leaf, Mountain } from 'lucide-react';
+import { Globe, ArrowLeft, ArrowRight, BookOpen, Info, Target, CheckCircle, Tree, Users, Leaf, Mountains } from '@phosphor-icons/react';
 import Link from 'next/link';
 
 export default function BiodiversityPage() {
@@ -373,7 +373,7 @@ export default function BiodiversityPage() {
             <>
               <div className="mb-6">
                 <h3 className={`text-xl font-semibold ${textColors.primary} mb-4 flex items-center`}>
-                  <TreePine className={`w-5 h-5 ${accentColorClass} mr-2`} />
+                  <Tree className={`w-5 h-5 ${accentColorClass} mr-2`} />
                   Key Ecosystem Roles
                 </h3>
                 <div className="grid gap-4">
@@ -474,7 +474,7 @@ export default function BiodiversityPage() {
             <>
               <div className="mb-6">
                 <h3 className={`text-xl font-semibold ${textColors.primary} mb-4 flex items-center`}>
-                  <Mountain className={`w-5 h-5 ${accentColorClass} mr-2`} />
+                  <Mountains className={`w-5 h-5 ${accentColorClass} mr-2`} />
                   Key Concepts about Endemic Species
                 </h3>
                 <div className="grid gap-3">

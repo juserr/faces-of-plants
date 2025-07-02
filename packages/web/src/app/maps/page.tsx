@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useMode, getBackgroundGradient, getTextColors } from '../../context/ModeContext';
-import { Map } from 'lucide-react';
+import { MapPin } from '@phosphor-icons/react';
 
 const MapsPage = () => {
   const { mode, theme } = useMode();
@@ -45,7 +45,7 @@ const MapsPage = () => {
         {/* Data Types & Visualizations */}
         <div className={`section ${sectionBg} rounded-2xl p-8 border backdrop-blur-md mb-16`}>
           <h2 className={`text-2xl font-semibold ${accentColorClass} mb-6 flex items-center gap-2`}>
-            <Map size={24} /> Data Types & Visualizations
+            <MapPin size={24} /> Data Types & Visualizations
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 my-8">
             <div className={`${innerCardBg} rounded-lg p-6 border ${innerCardBorder}`}>
@@ -78,7 +78,7 @@ const MapsPage = () => {
               <div className={`absolute top-5 left-5 ${theme === "light" ? "bg-white/90" : "bg-black/70"} p-3 rounded-md border ${theme === "light" ? "border-gray-200" : ""}`}>
                 <div className={`${accentColorClass} font-bold`}>Quercus robur</div>
                 <div className={`text-sm ${textColors.secondary}`}>1,247 occurrences</div>
-                <div className={`text-xs ${textColors.secondary}`}>Last updated: 2024</div>
+                <div className={`text-xs ${textColors.secondary}`}>Last updated: 2025</div>
               </div>
               <div className="absolute bottom-5 right-5">
                 <button className={`${theme === "light" ? "bg-gradient-to-br from-green-400 to-green-500" : "bg-gradient-to-br from-green-500 to-green-600"} text-white px-4 py-2 rounded-lg font-medium mr-2`}>Layer Controls</button>

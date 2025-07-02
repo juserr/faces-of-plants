@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useMode, getBackgroundGradient, getTextColors } from '../context/ModeContext';
-import { Search, Leaf, Users, Database, Globe, BookOpen, Zap } from 'lucide-react';
+import { MagnifyingGlass, Leaf, Users, Database, Globe, BookOpen, Lightning, Microscope, MapPin, Calendar } from '@phosphor-icons/react';
 import type { GBIFOccurrence } from "@faces-of-plants/core/src/types";
 import Link from 'next/link';
 
@@ -92,7 +92,7 @@ const FacesOfPlantsLanding = () => {
 
   const features = [
     {
-      icon: <Search className="w-6 h-6" />,
+      icon: <MagnifyingGlass className="w-6 h-6" />,
       title: "Natural Language Search",
       description: "Ask questions about plants in plain English and get precise scientific data."
     },
@@ -117,7 +117,7 @@ const FacesOfPlantsLanding = () => {
       description: "Advanced filtering, data export, and analysis tools for scientific research."
     },
     {
-      icon: <Zap className="w-6 h-6" />,
+      icon: <Lightning className="w-6 h-6" />,
       title: "AI-Powered",
       description: "Smart query interpretation and personalized recommendations."
     }
@@ -149,7 +149,7 @@ const FacesOfPlantsLanding = () => {
                     : 'text-gray-600 hover:text-green-600'
                 }`}
               >
-                🌱 Citizen
+                <Leaf className="w-4 h-4 mr-1" /> Citizen
               </button>
               <button
                 onClick={() => setSearchState(prev => ({ ...prev, userType: 'researcher' }))}
@@ -159,7 +159,7 @@ const FacesOfPlantsLanding = () => {
                     : 'text-gray-600 hover:text-blue-600'
                 }`}
               >
-                🔬 Researcher
+                <Microscope className="w-4 h-4 mr-1" /> Researcher
               </button>
             </div>
           </div>
@@ -187,7 +187,10 @@ const FacesOfPlantsLanding = () => {
           {/* Example Queries - Moved above search field */}
           <div className="mb-6">
             <p className={`text-sm ${textColors.secondary} mb-3 text-center`}>
-              {mode === 'citizen' ? '🌱 Try asking:' : '🔬 Example queries:'}
+              {mode === 'citizen' ? 
+                <span className="flex items-center"><Leaf className="w-4 h-4 mr-1" />Try asking:</span> : 
+                <span className="flex items-center"><Microscope className="w-4 h-4 mr-1" />Example queries:</span>
+              }
             </p>
             <div className="flex flex-wrap gap-2 justify-center">
               {exampleQueries[mode].map((example, index) => (
@@ -231,7 +234,7 @@ const FacesOfPlantsLanding = () => {
                     </>
                   ) : (
                     <>
-                      <Search className="w-4 h-4" />
+                      <MagnifyingGlass className="w-4 h-4" />
                       <span>Search</span>
                     </>
                   )}
@@ -312,7 +315,9 @@ const FacesOfPlantsLanding = () => {
                         {/* Location and date info */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                           <div>
-                            <div className={`font-medium ${textColors.primary} mb-1`}>📍 Location</div>
+                            <div className={`font-medium ${textColors.primary} mb-1 flex items-center`}>
+                              <MapPin className="w-4 h-4 mr-1" /> Location
+                            </div>
                             <div className={textColors.secondary}>
                               <div>{item.country || 'Unknown country'}</div>
                               {item.stateProvince && <div>{item.stateProvince}</div>}
@@ -331,7 +336,9 @@ const FacesOfPlantsLanding = () => {
                           </div>
 
                           <div>
-                            <div className={`font-medium ${textColors.primary} mb-1`}>📅 Collection Info</div>
+                            <div className={`font-medium ${textColors.primary} mb-1 flex items-center`}>
+                              <Calendar className="w-4 h-4 mr-1" /> Collection Info
+                            </div>
                             <div className={textColors.secondary}>
                               {item.eventDate && <div>Date: {item.eventDate}</div>}
                               {item.recordedBy && <div>Recorded by: {item.recordedBy}</div>}
@@ -479,7 +486,7 @@ const FacesOfPlantsLanding = () => {
           </div>
           
           <div className={`border-t ${theme === "light" ? "border-white/20" : "border-gray-700/20"} mt-8 pt-8 text-center text-sm ${textColors.secondary}`}>
-            <p>© 2024 Faces of Plants. Built with ♥ for biodiversity research and education.</p>
+            <p>© 2025 Faces of Plants. Built with ♥ for biodiversity research and education.</p>
           </div>
         </div>
       </footer>

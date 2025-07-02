@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useMode, getBackgroundGradient, getTextColors } from '../../../context/ModeContext';
-import { Microscope, ArrowLeft, ArrowRight, BookOpen, Info, Target, CheckCircle, Camera, MapPin, Dna, FileSearch } from 'lucide-react';
+import { Microscope, ArrowLeft, ArrowRight, BookOpen, Info, Target, CheckCircle, Camera, MapPin, Dna, FileText } from '@phosphor-icons/react';
 import Link from 'next/link';
 
 export default function ResearchMethodsPage() {
@@ -673,7 +673,7 @@ export default function ResearchMethodsPage() {
 
               <div className={`${innerCardBg} rounded-xl p-6 border ${innerCardBorder}`}>
                 <h4 className={`text-lg font-semibold ${textColors.primary} mb-4 flex items-center`}>
-                  <FileSearch className={`w-5 h-5 ${accentColorClass} mr-2`} />
+                  <FileText className={`w-5 h-5 ${accentColorClass} mr-2`} />
                   Digitization Process
                 </h4>
                 <div className="grid gap-4">

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useMode, getBackgroundGradient, getTextColors } from '../../context/ModeContext';
-import { Search, Database, Globe } from 'lucide-react';
+import { MagnifyingGlass, Database, Globe } from '@phosphor-icons/react';
 
 const SearchPage = () => {
   const { mode, theme } = useMode();
@@ -78,7 +78,7 @@ const SearchPage = () => {
         {/* Search Result Aggregation */}
         <div className={`section ${sectionBg} rounded-2xl p-8 border backdrop-blur-md mb-16`}>
           <h2 className={`text-2xl font-semibold ${accentColorClass} mb-6 flex items-center gap-2`}>
-            <Search size={24} /> Search Result Aggregation
+            <MagnifyingGlass size={24} /> Search Result Aggregation
           </h2>
           <div className={`${theme === "light" ? "bg-gray-100/80 border-gray-200/40" : "bg-gray-900/80 border-gray-600/20"} rounded-lg p-6 my-6 border backdrop-blur-sm`}>
             <h4 className={`${accentColorClass} mb-4`}>Unified Results Interface</h4>

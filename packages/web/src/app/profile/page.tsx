@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useMode, getBackgroundGradient, getTextColors } from '../../context/ModeContext';
-import { User, Settings, Heart } from 'lucide-react';
+import { User, Gear, Heart } from '@phosphor-icons/react';
 
 export default function ProfilePage() {
   const { mode, theme } = useMode();
@@ -46,7 +46,7 @@ export default function ProfilePage() {
         {/* User Settings */}
         <div className={`section ${sectionBg} rounded-2xl p-8 border backdrop-blur-md mb-16`}>
           <h2 className={`text-2xl font-semibold ${accentColorClass} mb-6 flex items-center gap-2`}>
-            <Settings size={24} /> User Settings
+            <Gear size={24} /> User Settings
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-8">
             <div className={`${innerCardBg} rounded-lg p-6 border ${innerCardBorder}`}>

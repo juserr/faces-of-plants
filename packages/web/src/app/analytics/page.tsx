@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useMode, getBackgroundGradient, getTextColors } from '../../context/ModeContext';
-import { BarChart2, TrendingUp, PieChart } from 'lucide-react';
+import { ChartBar, TrendUp, ChartPie } from '@phosphor-icons/react';
 
 const AnalyticsPage = () => {
   const { mode, theme } = useMode();
@@ -45,7 +45,7 @@ const AnalyticsPage = () => {
         {/* Chart Types & Correlations */}
         <div className={`section ${sectionBg} rounded-2xl p-8 border backdrop-blur-md mb-16`}>
           <h2 className={`text-2xl font-semibold ${accentColorClass} mb-6 flex items-center gap-2`}>
-            <BarChart2 size={24} /> Chart Types & Correlations
+            <ChartBar size={24} /> Chart Types & Correlations
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-8">
             <div className={`${innerCardBg} rounded-lg p-6 border ${innerCardBorder}`}>
@@ -68,7 +68,7 @@ const AnalyticsPage = () => {
         {/* Correlation Matrix */}
         <div className={`section ${sectionBg} rounded-2xl p-8 border backdrop-blur-md mb-16`}>
           <h2 className={`text-2xl font-semibold ${accentColorClass} mb-6 flex items-center gap-2`}>
-            <TrendingUp size={24} /> Correlation Matrix
+            <TrendUp size={24} /> Correlation Matrix
           </h2>
           <p className={`${listTextColor} mb-4`}>Environmental factors vs. species occurrence patterns:</p>
           <div className="grid grid-cols-4 gap-2 my-4">
@@ -94,7 +94,7 @@ const AnalyticsPage = () => {
         {/* Advanced Analytics Dashboard */}
         <div className={`section ${sectionBg} rounded-2xl p-8 border backdrop-blur-md mb-16`}>
           <h2 className={`text-2xl font-semibold ${accentColorClass} mb-6 flex items-center gap-2`}>
-            <PieChart size={24} /> Advanced Analytics Dashboard
+            <ChartPie size={24} /> Advanced Analytics Dashboard
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
             <div className={`${innerCardBg} rounded-lg p-6 border ${innerCardBorder}`}>

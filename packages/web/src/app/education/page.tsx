@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useMode, getBackgroundGradient, getTextColors } from '../../context/ModeContext';
-import { BookOpen, Microscope, TreePine, Globe, Database, Users, ArrowRight, Leaf } from 'lucide-react';
+import { BookOpen, Microscope, Tree, Globe, Database, Users, ArrowRight, Leaf, Target, Books } from '@phosphor-icons/react';
 import Link from 'next/link';
 
 export default function EducationPage() {
@@ -34,7 +34,7 @@ export default function EducationPage() {
     {
       id: "taxonomy",
       title: "Plant Taxonomy 101",
-      icon: <TreePine className="w-8 h-8" />,
+      icon: <Tree className="w-8 h-8" />,
       description: "Learn how scientists classify plants from kingdoms to species",
       duration: "15 min read",
       level: "Beginner",
@@ -99,7 +99,8 @@ export default function EducationPage() {
         {/* Learning Path Overview */}
         <div className={`${sectionBg} rounded-2xl p-8 border backdrop-blur-md mb-16`}>
           <h2 className={`text-3xl font-bold ${textColors.primary} mb-6 text-center`}>
-            🎯 Your Learning Journey
+            <Target className={`w-6 h-6 ${accentColorClass} mr-3`} />
+            Your Learning Journey
           </h2>
           <div className="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0 md:space-x-8">
             {educationalModules.map((module, index) => (
@@ -139,8 +140,8 @@ export default function EducationPage() {
                 </p>
                 
                 <div className="flex items-center justify-between mb-4">
-                  <span className={`text-sm ${textColors.secondary}`}>
-                    📚 {module.duration}
+                  <span className={`text-sm ${textColors.secondary} flex items-center`}>
+                    <Books className="w-4 h-4 mr-1" /> {module.duration}
                   </span>
                   <span className={`text-xs px-3 py-1 rounded-full ${theme === "light" ? "bg-gradient-to-r from-gray-100 to-gray-200" : "bg-gradient-to-r from-gray-700 to-gray-800"} ${textColors.primary} font-medium`}>
                     {module.level}
@@ -176,7 +177,9 @@ export default function EducationPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className={`${innerCardBg} rounded-lg p-6 border ${innerCardBorder}`}>
-              <h4 className={`font-semibold ${accentColorClass} mb-2`}>🔬 Interactive Tools</h4>
+              <h4 className={`font-semibold ${accentColorClass} mb-2 flex items-center`}>
+                <Microscope className="w-4 h-4 mr-2" /> Interactive Tools
+              </h4>
               <p className={`text-sm ${listTextColor}`}>Hands-on tools to explore plant classification and data visualization</p>
             </div>
             <div className={`${innerCardBg} rounded-lg p-6 border ${innerCardBorder}`}>
