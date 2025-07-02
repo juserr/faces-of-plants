@@ -14,21 +14,36 @@ export class GBIFClient {
   }> {
     const searchParams = new URLSearchParams();
     
-    Object.entries(params).forEach(([key, value]) => {
+    // Always filter for Plantae kingdom
+    const enhancedParams = {
+      ...params,
+      kingdom: 'Plantae'
+    };
+    
+    Object.entries(enhancedParams).forEach(([key, value]) => {
       if (value !== undefined) {
         searchParams.append(key, value.toString());
       }
     });
 
-    const response = await fetch(
-      `${this.baseUrl}/occurrence/search?${searchParams.toString()}`
-    );
+    const requestUrl = `${this.baseUrl}/occurrence/search?${searchParams.toString()}`;
+    console.log(`[GBIFClient] Fetching from URL: ${requestUrl}`);
+    console.log(`[GBIFClient] Filtering for Plantae kingdom only`);
 
+    const response = await fetch(requestUrl);
+
+    console.log(`[GBIFClient] Response Status: ${response.status}`);
     if (!response.ok) {
-      throw new Error(`GBIF API error: ${response.status}`);
+      const errorText = await response.text();
+      console.error(`[GBIFClient] Response Error: ${errorText}`);
+      throw new Error(`GBIF API error: ${response.status} - ${errorText}`);
     }
 
-    const data = await response.json();
+    const data = await response.json() as {
+      results: any[];
+      count: number;
+      endOfRecords: boolean;
+    };
     
     return {
       results: data.results || [],

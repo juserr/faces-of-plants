@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
       metadata: { requestId: Date.now().toString() },
     });
     // Log the result from the abstraction layer
-    console.log("[API/chat] Abstraction layer result:", result);
+    console.log("[API/chat] Abstraction layer result:", JSON.stringify(result, null, 2));
     return NextResponse.json({ ok: true, result });
   } catch (err) {
     console.error("[API/chat] Error:", err);
